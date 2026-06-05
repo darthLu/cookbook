@@ -15,7 +15,7 @@ class CookbookApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF8B5E3C),
+          seedColor: const Color.fromARGB(255, 8, 75, 28),
         ),
         useMaterial3: true,
       ),
