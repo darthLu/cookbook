@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/sample_recipes.dart';
+import '../data/recipes.dart';
 import 'recipe_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             fontSize: 24,
           ),
         ),
-        backgroundColor: const Color(0xFF8B5E3C),
+        backgroundColor: const Color.fromARGB(255, 5, 106, 23),
         foregroundColor: Colors.white,
       ),
       body: ListView.builder(
@@ -40,12 +40,12 @@ class HomeScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: Color(0xFF4A2E1A),
+                  color: Color.fromARGB(255, 0, 18, 4),
                 ),
               ),
               subtitle: Text(
                 '⏱ ${recipe.cookTime}  •  ${recipe.description}',
-                style: const TextStyle(color: Color(0xFF7A5C3E)),
+                style: const TextStyle(color: Color.fromARGB(255, 3, 57, 13),),
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
