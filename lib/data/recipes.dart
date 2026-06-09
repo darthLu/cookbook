@@ -2,7 +2,7 @@ import '../models/recipe.dart';
 
 final List<Recipe> sampleRecipes = [
   Recipe(
-    name: 'Instant pot Honey Garlic Chicken',
+    name: 'Instant Pot Honey Garlic Chicken',
     description: 'This Instant Pot recipe is a delicious and easy way to make tender chicken in a savory honey garlic sauce.',
     cookTime: '40 mins',
     ingredients: [

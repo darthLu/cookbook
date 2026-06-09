@@ -1,9 +1,9 @@
 class Recipe {
-  final String name;
-  final String description;
-  final List<String> ingredients;
-  final List<String> steps;
-  final String cookTime;
+  String name;
+  String description;
+  List<String> ingredients;
+  List<String> steps;
+  String cookTime;
 
   Recipe({
     required this.name,
