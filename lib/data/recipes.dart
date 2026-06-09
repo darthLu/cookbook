@@ -76,7 +76,7 @@ final List<Recipe> sampleRecipes = [
   ),
   Recipe(
     name: 'Moms Chili',
-    description: 'This is a hearty and delicious chili recipe that my mom always makes for us.',
+    description: 'This chili recipe is a delicious and hearty dish that is perfect for a cozy night in or a game day gathering.',
     cookTime: '2-3 hours',
     ingredients: [
       'Pinto Beans',
@@ -103,7 +103,7 @@ final List<Recipe> sampleRecipes = [
   ),
     Recipe(
     name: 'Asparagus Casserole',
-    description: 'This asparagus casserole recipe is a delicious and easy way to make a creamy and cheesy side dish that is perfect for any occasion.',
+    description: 'This asparagus casserole recipe is a delicious, creamy, and cheesy side dish that is perfect for any occasion.',
     cookTime: '1 hr 15 mins',
     ingredients: [
       '2 cans (14.5 oz) asparagus spears, drained',
