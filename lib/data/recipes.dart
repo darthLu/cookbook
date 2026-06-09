@@ -51,4 +51,27 @@ final List<Recipe> sampleRecipes = [
       'Add the spinach and basil and cook for another 2 minutes. Season with salt and pepper as needed. Serve immediately.',
     ],
   ),
+  Recipe(
+    name: 'Sweet Bread',
+    description: 'This sweet bread recipe is a delicious and easy way to make soft, fluffy bread with a hint of sweetness.',
+    cookTime: '2 hours',
+    ingredients: [
+      '1 tablespoon instant yeast',
+      '1 cup very warm milk (115°F)',
+      '1/3 cup granulated sugar',
+      '1/2 cup butter, well softened, almost melting',
+      '1 teaspoon salt',
+      '2 large eggs (room temperature)',
+      '4 cups all-purpose flour',
+    ],
+    steps: [
+      'In a large bowl, stir together the yeast and milk until dissolved.',
+      'Beat in the sugar, butter, salt and eggs until well combined.', 
+      'Add the flour, one cup at a time, stirring until incorporated. The dough should be shaggy and still sticky.',
+      'Turn out the dough onto a floured surface and knead 5-6 minutes until smooth and elastic.', 
+      'Place the kneaded dough into a greased bowl.',
+      'Cover and let rise for 1 hour or until doubled in size. The length of time needed to rise will depend on how warm the room is. Ideal rising temperature is 72 F.',
+      'When the dough has risen, punch dough down with a floured hand and shape and bake as desired.',
+    ],
+  ),
 ];
