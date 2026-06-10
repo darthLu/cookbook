@@ -10,15 +10,13 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-
-  
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   String searchQuery = '';
   List<Recipe> recipes = [];
   bool isLoading = true;
-//  late List<Recipe> recipes;
+  //  late List<Recipe> recipes;
 
   @override
   void initState() {
@@ -26,67 +24,54 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadRecipes();
   }
 
+  Future<void> _loadRecipes() async {
+    final savedRecipes = await RecipeStorage.loadRecipes();
 
-Future<void> _loadRecipes() async {
-  final savedRecipes = await RecipeStorage.loadRecipes();
+    setState(() {
+      recipes = savedRecipes.isEmpty ? List.from(sampleRecipes) : savedRecipes;
 
-  setState(() {
-    recipes = savedRecipes.isEmpty
-        ? List.from(sampleRecipes)
-        : savedRecipes;
-
-    isLoading = false;
-  });
-}
+      isLoading = false;
+    });
+  }
 
   void _showDeleteDialog(Recipe recipe) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Delete Recipe'),
-        content: Text(
-          'Delete "${recipe.name}"?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                recipes.remove(recipe);
-                RecipeStorage.saveRecipes(recipes);
-              });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Recipe'),
+          content: Text('Delete "${recipe.name}"?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  recipes.remove(recipe);
+                  RecipeStorage.saveRecipes(recipes);
+                });
 
-              Navigator.pop(context);
-            },
-            child: const Text('Delete'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
+                Navigator.pop(context);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final filteredRecipes = recipes.where((recipe) {
-      return recipe.name
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase());
+      return recipe.name.toLowerCase().contains(searchQuery.toLowerCase());
     }).toList();
 
     return Scaffold(
@@ -94,36 +79,30 @@ Future<void> _loadRecipes() async {
       appBar: AppBar(
         title: const Text(
           'Cookbook',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         backgroundColor: const Color.fromARGB(255, 5, 106, 23),
         foregroundColor: Colors.white,
       ),
 
       floatingActionButton: FloatingActionButton(
-      backgroundColor: const Color.fromARGB(255, 5, 106, 23),
-      foregroundColor: Colors.white,
-      onPressed: () async {
-        final newRecipe = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const EditRecipeScreen(),
-          ),
-        );
+        backgroundColor: const Color.fromARGB(255, 5, 106, 23),
+        foregroundColor: Colors.white,
+        onPressed: () async {
+          final newRecipe = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditRecipeScreen()),
+          );
 
-        if (newRecipe != null) {
-          setState(() {
-            recipes.add(newRecipe);
-            RecipeStorage.saveRecipes(recipes);
-          });
-        }
-      },
-      child: const Icon(Icons.add),
-    ),
-
+          if (newRecipe != null) {
+            setState(() {
+              recipes.add(newRecipe);
+              RecipeStorage.saveRecipes(recipes);
+            });
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
 
       body: Column(
         children: [
@@ -192,17 +171,29 @@ Future<void> _loadRecipes() async {
                             color: Color(0xFF8B5E3C),
                             size: 16,
                           ),
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            final updatedRecipe = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
                                     RecipeDetailScreen(recipe: recipe),
                               ),
                             );
+
+                            if (updatedRecipe != null) {
+                              setState(() {
+                                final recipeIndex = recipes.indexOf(recipe);
+
+                                if (recipeIndex != -1) {
+                                  recipes[recipeIndex] = updatedRecipe;
+                                }
+                              });
+
+                              await RecipeStorage.saveRecipes(recipes);
+                            }
                           },
-                          onLongPress:() {
-                              _showDeleteDialog(recipe);
+                          onLongPress: () {
+                            _showDeleteDialog(recipe);
                           },
                         ),
                       );

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 
 class EditRecipeScreen extends StatefulWidget {
-  const EditRecipeScreen({super.key});
+  final Recipe? recipe;
+
+  const EditRecipeScreen({super.key, this.recipe});
 
   @override
   State<EditRecipeScreen> createState() => _EditRecipeScreenState();
@@ -26,10 +28,23 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.recipe != null) {
+      nameController.text = widget.recipe!.name;
+      cookTimeController.text = widget.recipe!.cookTime;
+      descriptionController.text = widget.recipe!.description;
+      ingredientsController.text = widget.recipe!.ingredients.join('\n');
+      stepsController.text = widget.recipe!.steps.join('\n');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Recipe'),
+        title: Text(widget.recipe == null ? 'Add Recipe' : 'Edit Recipe'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,64 +54,70 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(labelText: 'Recipe Name'),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: cookTimeController,
-              decoration: const InputDecoration(labelText: 'Cook Time'),
-            ),
-
-            const SizedBox(height: 16),
-            
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: ingredientsController,
-              maxLines: 6,
-              decoration: const InputDecoration(
-                labelText: 'Ingredients',
-                hintText: 'One ingredient per line',
-                //border: OutlineInputBorder(),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            TextField(
-              controller: stepsController,
-              maxLines: 8,
-              decoration: const InputDecoration(
-                labelText: 'Steps',
-                hintText: 'One step per line',
-                //border: OutlineInputBorder(),
+              TextField(
+                controller: cookTimeController,
+                decoration: const InputDecoration(labelText: 'Cook Time'),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            ElevatedButton(
-              onPressed: () {
-                final recipe = Recipe(
-                  name: nameController.text,
-                  cookTime: cookTimeController.text,
-                  description: descriptionController.text,
-                  ingredients: ingredientsController.text.split('\n').where((item) => item.trim().isNotEmpty).toList(),
-                  steps: stepsController.text.split('\n').where((item) => item.trim().isNotEmpty).toList(),
-                );
-                Navigator.pop(context, recipe);
-              },
-              child: const Text('Save Recipe'),
-            ),
-          ],
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
+
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: ingredientsController,
+                maxLines: 6,
+                decoration: const InputDecoration(
+                  labelText: 'Ingredients',
+                  hintText: 'One ingredient per line',
+                  //border: OutlineInputBorder(),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: stepsController,
+                maxLines: 8,
+                decoration: const InputDecoration(
+                  labelText: 'Steps',
+                  hintText: 'One step per line',
+                  //border: OutlineInputBorder(),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              ElevatedButton(
+                onPressed: () {
+                  final recipe = Recipe(
+                    name: nameController.text,
+                    cookTime: cookTimeController.text,
+                    description: descriptionController.text,
+                    ingredients: ingredientsController.text
+                        .split('\n')
+                        .where((item) => item.trim().isNotEmpty)
+                        .toList(),
+                    steps: stepsController.text
+                        .split('\n')
+                        .where((item) => item.trim().isNotEmpty)
+                        .toList(),
+                  );
+                  Navigator.pop(context, recipe);
+                },
+                child: const Text('Save Recipe'),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
