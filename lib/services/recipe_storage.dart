@@ -14,6 +14,7 @@ class RecipeStorage {
         'description': recipe.description,
         'ingredients': recipe.ingredients,
         'steps': recipe.steps,
+        'category': recipe.category,
       };
     }).toList();
 
@@ -36,6 +37,7 @@ class RecipeStorage {
         description: item['description'],
         ingredients: List<String>.from(item['ingredients']),
         steps: List<String>.from(item['steps']),
+        category: item['category'] ?? 'Dinner', // Load the category from Hive
       );
     }).toList();
   }

@@ -16,6 +16,16 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
   final descriptionController = TextEditingController();
   final ingredientsController = TextEditingController();
   final stepsController = TextEditingController();
+  String selectedCategory = 'Dinner';
+
+  final categories = [
+    'Breakfast',
+    'Lunch',
+    'Dinner',
+    'Soup',
+    'Dessert',
+    'Side Dish',
+  ];
 
   @override
   void dispose() {
@@ -37,6 +47,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
       descriptionController.text = widget.recipe!.description;
       ingredientsController.text = widget.recipe!.ingredients.join('\n');
       stepsController.text = widget.recipe!.steps.join('\n');
+      selectedCategory = widget.recipe!.category;
     }
   }
 
@@ -96,6 +107,24 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
               const SizedBox(height: 16),
 
+              const SizedBox(height: 16),
+
+              DropdownButtonFormField<String>(
+                value: selectedCategory,
+                decoration: const InputDecoration(labelText: 'Category'),
+                items: categories.map((category) {
+                  return DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCategory = value!;
+                  });
+                },
+              ),
+
               ElevatedButton(
                 onPressed: () {
                   final recipe = Recipe(
@@ -110,6 +139,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                         .split('\n')
                         .where((item) => item.trim().isNotEmpty)
                         .toList(),
+                    category: selectedCategory,
                   );
                   Navigator.pop(context, recipe);
                 },

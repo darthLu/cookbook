@@ -24,6 +24,7 @@ final List<Recipe> sampleRecipes = [
       'Dissolve 3 teaspoons of cornstarch in 1/4 cup of water and add to the sauce in the pot. Set to Saute and cook until the sauce has thickened, about 3-5 minutes.',
       'Cut the chicken into bite sized pieces and return to the pot to coat with the sauce. Serve over rice.',
     ],
+    category: '',
   ),
   Recipe(
     name: 'Creamy Tuscan Shrimp',
@@ -50,6 +51,7 @@ final List<Recipe> sampleRecipes = [
       'Add the shrimp and cook for around 5 minutes or until they are cooked through and the sauce is slightly thickened, taking care not to overcook them.',
       'Add the spinach and basil and cook for another 2 minutes. Season with salt and pepper as needed. Serve immediately.',
     ],
+    category: '',
   ),
   Recipe(
     name: 'Sweet Bread',
@@ -73,6 +75,7 @@ final List<Recipe> sampleRecipes = [
       'Cover and let rise for 1 hour or until doubled in size. The length of time needed to rise will depend on how warm the room is. Ideal rising temperature is 72 F.',
       'When the dough has risen, punch dough down with a floured hand and shape and bake as desired.',
     ],
+    category: '',
   ),
   Recipe(
     name: 'Moms Chili',
@@ -100,6 +103,7 @@ final List<Recipe> sampleRecipes = [
       'Cook on High for 2 hours or Low for 3 hours.', 
       'Stir occasionally and taste for seasoning. Add more chili powder, salt, pepper, or hot sauce as needed.',  
     ],
+    category: '',
   ),
     Recipe(
     name: 'Asparagus Casserole',
@@ -130,5 +134,6 @@ final List<Recipe> sampleRecipes = [
       'Combine croutons and butter and place on top of casserole. ',
       'Bake at 350 F for 25 minutes or until dish is bubbly and crumbs are slightly browned on top.', 
     ],
+    category: '',
   ),
 ];

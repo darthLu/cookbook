@@ -14,9 +14,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String searchQuery = '';
+  String selectedCategory = 'All';
   List<Recipe> recipes = [];
   bool isLoading = true;
-  //  late List<Recipe> recipes;
 
   @override
   void initState() {
@@ -70,8 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+
+    final categories = ['All', ...recipes.map((r) => r.category).toSet()];
+
     final filteredRecipes = recipes.where((recipe) {
-      return recipe.name.toLowerCase().contains(searchQuery.toLowerCase());
+      final matchesSearch = recipe.name.toLowerCase().contains(
+        searchQuery.toLowerCase(),
+      );
+
+      final matchesCategory =
+          selectedCategory == 'All' || recipe.category == selectedCategory;
+
+      return matchesSearch && matchesCategory;
     }).toList();
 
     return Scaffold(
@@ -106,6 +116,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: Column(
         children: [
+          SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ChoiceChip(
+                    label: Text(category),
+                    selected: selectedCategory == category,
+                    onSelected: (_) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.all(16),
             child: TextField(
@@ -161,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           subtitle: Text(
-                            '⏱ ${recipe.cookTime}  •  ${recipe.description}',
+                            '${recipe.category} • ⏱ ${recipe.cookTime}\n${recipe.description}',
                             style: const TextStyle(
                               color: Color.fromARGB(255, 3, 57, 13),
                             ),

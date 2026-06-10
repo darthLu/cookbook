@@ -4,6 +4,7 @@ class Recipe {
   List<String> ingredients;
   List<String> steps;
   String cookTime;
+  String category;
 
   Recipe({
     required this.name,
@@ -11,5 +12,6 @@ class Recipe {
     required this.ingredients,
     required this.steps,
     required this.cookTime,
+    required this.category,
   });
 }
