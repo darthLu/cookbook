@@ -3,6 +3,7 @@ import '../data/recipes.dart';
 import 'recipe_detail_screen.dart';
 import 'edit_recipe_screen.dart';
 import '../models/recipe.dart';
+import '../services/recipe_storage.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,13 +16,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String searchQuery = '';
-  late List<Recipe> recipes;
+  List<Recipe> recipes = [];
+  bool isLoading = true;
+//  late List<Recipe> recipes;
 
   @override
   void initState() {
     super.initState();
-    recipes = List.from(sampleRecipes);
+    _loadRecipes();
   }
+
+
+Future<void> _loadRecipes() async {
+  final savedRecipes = await RecipeStorage.loadRecipes();
+
+  setState(() {
+    recipes = savedRecipes.isEmpty
+        ? List.from(sampleRecipes)
+        : savedRecipes;
+
+    isLoading = false;
+  });
+}
 
   void _showDeleteDialog(Recipe recipe) {
   showDialog(
@@ -43,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               setState(() {
                 recipes.remove(recipe);
+                RecipeStorage.saveRecipes(recipes);
               });
 
               Navigator.pop(context);
@@ -59,6 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     final filteredRecipes = recipes.where((recipe) {
       return recipe.name
           .toLowerCase()
@@ -93,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (newRecipe != null) {
           setState(() {
             recipes.add(newRecipe);
+            RecipeStorage.saveRecipes(recipes);
           });
         }
       },
