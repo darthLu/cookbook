@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import 'package:flutter/services.dart';
 
 class EditRecipeScreen extends StatefulWidget {
   final Recipe? recipe;
@@ -78,7 +79,11 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+                maxLength: 250,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(120),
+                ],
+                decoration: const InputDecoration(labelText: 'Description', counterText:'',),
               ),
 
               const SizedBox(height: 16),

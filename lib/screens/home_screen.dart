@@ -200,6 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             subtitle: Text(
                               '${recipe.category} • ⏱ ${recipe.cookTime}\n${recipe.description}',
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 3, 57, 13),
                               ),
