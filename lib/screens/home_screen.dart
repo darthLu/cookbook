@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 50,
             child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               itemCount: categories.length,
@@ -169,66 +170,69 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 18),
                     ),
                   )
-                : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: filteredRecipes.length,
-                    itemBuilder: (context, index) {
-                      final recipe = filteredRecipes[index];
+                : RefreshIndicator(
+                    onRefresh: _loadRecipes,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: filteredRecipes.length,
+                      itemBuilder: (context, index) {
+                        final recipe = filteredRecipes[index];
 
-                      return Card(
-                        color: const Color(0xFFFDF6EC),
-                        margin: const EdgeInsets.only(bottom: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                        return Card(
+                          color: const Color(0xFFFDF6EC),
+                          margin: const EdgeInsets.only(bottom: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          title: Text(
-                            recipe.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Color.fromARGB(255, 0, 18, 4),
+                          elevation: 2,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
                             ),
-                          ),
-                          subtitle: Text(
-                            '${recipe.category} • ⏱ ${recipe.cookTime}\n${recipe.description}',
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 3, 57, 13),
-                            ),
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFF8B5E3C),
-                            size: 16,
-                          ),
-                          onTap: () async {
-                            final updatedRecipe = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    RecipeDetailScreen(recipe: recipe),
+                            title: Text(
+                              recipe.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 0, 18, 4),
                               ),
-                            );
-
-                            if (updatedRecipe != null) {
-                              await RecipeFirestoreService.updateRecipe(
-                                updatedRecipe,
+                            ),
+                            subtitle: Text(
+                              '${recipe.category} • ⏱ ${recipe.cookTime}\n${recipe.description}',
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 3, 57, 13),
+                              ),
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(0xFF8B5E3C),
+                              size: 16,
+                            ),
+                            onTap: () async {
+                              final updatedRecipe = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RecipeDetailScreen(recipe: recipe),
+                                ),
                               );
 
-                              await _loadRecipes();
-                            }
-                          },
-                          onLongPress: () {
-                            _showDeleteDialog(recipe);
-                          },
-                        ),
-                      );
-                    },
+                              if (updatedRecipe != null) {
+                                await RecipeFirestoreService.updateRecipe(
+                                  updatedRecipe,
+                                );
+
+                                await _loadRecipes();
+                              }
+                            },
+                            onLongPress: () {
+                              _showDeleteDialog(recipe);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
           ),
         ],
