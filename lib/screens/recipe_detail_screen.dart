@@ -19,6 +19,7 @@ class RecipeDetailScreen extends StatelessWidget {
           );
 
           if (updatedRecipe != null) {
+            // ignore: use_build_context_synchronously
             Navigator.pop(context, updatedRecipe);
           }
         },

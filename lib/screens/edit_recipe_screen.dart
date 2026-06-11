@@ -83,6 +83,24 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
               const SizedBox(height: 16),
 
+              DropdownButtonFormField<String>(
+                initialValue: selectedCategory,
+                decoration: const InputDecoration(labelText: 'Category'),
+                items: categories.map((category) {
+                  return DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCategory = value!;
+                  });
+                },
+              ),
+
+              const SizedBox(height: 16),
+
               TextField(
                 controller: ingredientsController,
                 maxLines: 6,
@@ -106,24 +124,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
               ),
 
               const SizedBox(height: 16),
-
-              const SizedBox(height: 16),
-
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                decoration: const InputDecoration(labelText: 'Category'),
-                items: categories.map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCategory = value!;
-                  });
-                },
-              ),
 
               ElevatedButton(
                 onPressed: () {
