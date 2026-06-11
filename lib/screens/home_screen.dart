@@ -4,6 +4,8 @@ import 'recipe_detail_screen.dart';
 import 'edit_recipe_screen.dart';
 import '../models/recipe.dart';
 import '../services/recipe_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/recipe_firestore_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,11 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadRecipes() async {
-    final savedRecipes = await RecipeStorage.loadRecipes();
+    final firestoreRecipes = await RecipeFirestoreService.loadRecipes();
 
     setState(() {
-      recipes = savedRecipes.isEmpty ? List.from(sampleRecipes) : savedRecipes;
-
+      recipes = firestoreRecipes;
       isLoading = false;
     });
   }
@@ -49,13 +50,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  recipes.remove(recipe);
-                  RecipeStorage.saveRecipes(recipes);
-                });
+              onPressed: () async {
+                if (recipe.id != null) {
+                  await RecipeFirestoreService.deleteRecipe(recipe.id!);
+                }
 
-                Navigator.pop(context);
+                await _loadRecipes();
+
+                if (mounted) {
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Delete'),
             ),
@@ -105,10 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
           );
 
           if (newRecipe != null) {
-            setState(() {
-              recipes.add(newRecipe);
-              RecipeStorage.saveRecipes(recipes);
-            });
+            await RecipeFirestoreService.addRecipe(newRecipe);
+
+            await _loadRecipes();
           }
         },
         child: const Icon(Icons.add),
@@ -216,15 +219,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
 
                             if (updatedRecipe != null) {
-                              setState(() {
-                                final recipeIndex = recipes.indexOf(recipe);
+                              await RecipeFirestoreService.updateRecipe(
+                                updatedRecipe,
+                              );
 
-                                if (recipeIndex != -1) {
-                                  recipes[recipeIndex] = updatedRecipe;
-                                }
-                              });
-
-                              await RecipeStorage.saveRecipes(recipes);
+                              await _loadRecipes();
                             }
                           },
                           onLongPress: () {

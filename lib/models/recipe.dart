@@ -1,4 +1,6 @@
 class Recipe {
+  String? id;
+
   String name;
   String description;
   List<String> ingredients;
@@ -7,6 +9,7 @@ class Recipe {
   String category;
 
   Recipe({
+    this.id,
     required this.name,
     required this.description,
     required this.ingredients,

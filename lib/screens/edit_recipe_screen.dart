@@ -128,6 +128,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
               ElevatedButton(
                 onPressed: () {
                   final recipe = Recipe(
+                    id: widget.recipe?.id,
                     name: nameController.text,
                     cookTime: cookTimeController.text,
                     description: descriptionController.text,
