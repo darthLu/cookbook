@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 4),
             Text(
-              'Version 0.2.0',
+              'Version 0.2.1',
               style: TextStyle(fontSize: 10, color: Colors.white70),
             ),
           ],
