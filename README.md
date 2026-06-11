@@ -74,7 +74,6 @@ This project is actively being developed.
 * Meal planning
 * Cloud synchronization
 * Recipe import from screenshots/photos
-* AI-assisted recipe importing
 
 ## Installation
 
