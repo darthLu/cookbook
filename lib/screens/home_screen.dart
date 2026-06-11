@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data/recipes.dart';
 import 'recipe_detail_screen.dart';
 import 'edit_recipe_screen.dart';
 import '../models/recipe.dart';
-import '../services/recipe_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/recipe_firestore_service.dart';
 
 class HomeScreen extends StatefulWidget {
