@@ -56,13 +56,12 @@ class DefaultFirebaseOptions {
     projectId: 'cookbook-7e5a0',
     storageBucket: 'cookbook-7e5a0.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBbYqwuWQowemCCXxYMHDuzZWUIrWOFpA8',
-    appId: '1:204233240729:ios:ff8c7eaa567799c1518808',
+    appId: '1:204233240729:ios:4a1050b9ce8a7753518808',
     messagingSenderId: '204233240729',
     projectId: 'cookbook-7e5a0',
     storageBucket: 'cookbook-7e5a0.firebasestorage.app',
-    iosBundleId: 'com.example.cookbook',
+    iosBundleId: 'com.lindseybarnard.cookbook',
   );
 }
