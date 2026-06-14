@@ -1,5 +1,6 @@
-ios-workflow:
-name: iOS Workflow
+workflows:
+  ios-workflow:
+  name: iOS Workflow
 
 environment:
   flutter: stable
