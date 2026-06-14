@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -11,10 +12,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
+  String? _appVersion;
 
   @override
   void initState() {
     super.initState();
+    _loadAppVersion();
 
     _timer = Timer(const Duration(seconds: 5), () {
       if (!mounted) {
@@ -25,6 +28,24 @@ class _SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
+    });
+  }
+
+  Future<void> _loadAppVersion() async {
+    final PackageInfo packageInfo;
+
+    try {
+      packageInfo = await PackageInfo.fromPlatform();
+    } catch (_) {
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _appVersion = packageInfo.version;
     });
   }
 
@@ -41,10 +62,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.menu_book, size: 100, color: Colors.white),
-            SizedBox(height: 24),
-            Text(
+          children: [
+            const Icon(Icons.menu_book, size: 100, color: Colors.white),
+            const SizedBox(height: 24),
+            const Text(
               'Cookbook',
               style: TextStyle(
                 fontSize: 36,
@@ -52,15 +73,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'Lindseys Cookbook',
               style: TextStyle(fontSize: 18, color: Colors.white70),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
-              'Version 0.2.1',
-              style: TextStyle(fontSize: 10, color: Colors.white70),
+              _appVersion == null ? 'Version' : 'Version $_appVersion',
+              style: const TextStyle(fontSize: 10, color: Colors.white70),
             ),
           ],
         ),

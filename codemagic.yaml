@@ -15,7 +15,15 @@ workflows:
     scripts:
       - flutter pub get
       - xcode-project use-profiles
-      - flutter build ipa --release --export-options-plist=/Users/builder/export_options.plist
+      - name: Build IPA with fresh iOS build number
+        script: |
+          IOS_BUILD_NUMBER="${PROJECT_BUILD_NUMBER:-${BUILD_NUMBER:-}}"
+
+          if [ -z "$IOS_BUILD_NUMBER" ]; then
+            IOS_BUILD_NUMBER="$(date +%s)"
+          fi
+
+          flutter build ipa --release --build-number="$IOS_BUILD_NUMBER" --export-options-plist=/Users/builder/export_options.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
