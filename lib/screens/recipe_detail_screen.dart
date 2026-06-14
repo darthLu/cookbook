@@ -45,12 +45,24 @@ class RecipeDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              '⏱ Cook time: ${recipe.cookTime}',
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 54, 119, 60),
-              ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.schedule,
+                  size: 16,
+                  color: Color.fromARGB(255, 54, 119, 60),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Cook time: ${recipe.cookTime}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(255, 54, 119, 60),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const Divider(height: 32, color: Color.fromARGB(255, 7, 26, 10)),
 
@@ -67,19 +79,24 @@ class RecipeDetailScreen extends StatelessWidget {
               (ingredient) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      '• ',
-                      style: TextStyle(
+                    Container(
+                      width: 6,
+                      height: 6,
+                      margin: const EdgeInsets.only(top: 8, right: 10),
+                      decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 26, 74, 35),
-                        fontSize: 16,
+                        shape: BoxShape.circle,
                       ),
                     ),
-                    Text(
-                      ingredient,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Color.fromARGB(255, 26, 74, 35),
+                    Expanded(
+                      child: Text(
+                        ingredient,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 26, 74, 35),
+                        ),
                       ),
                     ),
                   ],

@@ -48,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                final navigator = Navigator.of(context);
+
                 if (recipe.id != null) {
                   await RecipeFirestoreService.deleteRecipe(recipe.id!);
                 }
@@ -55,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 await _loadRecipes();
 
                 if (mounted) {
-                  Navigator.pop(context);
+                  navigator.pop();
                 }
               },
               child: const Text('Delete'),
@@ -198,12 +200,58 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Color.fromARGB(255, 0, 18, 4),
                               ),
                             ),
-                            subtitle: Text(
-                              '${recipe.category} • ⏱ ${recipe.cookTime}\n${recipe.description}',
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 3, 57, 13),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    spacing: 6,
+                                    runSpacing: 2,
+                                    children: [
+                                      Text(
+                                        recipe.category,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(255, 3, 57, 13),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const Text(
+                                        '/',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 3, 57, 13),
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.schedule,
+                                        size: 15,
+                                        color: Color.fromARGB(255, 3, 57, 13),
+                                      ),
+                                      Text(
+                                        recipe.cookTime,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(255, 3, 57, 13),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    recipe.description,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 3, 57, 13),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             trailing: const Icon(
