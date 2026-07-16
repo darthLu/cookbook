@@ -8,6 +8,10 @@ workflows:
     environment:
       flutter: stable
 
+      vars:
+        APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS: "--apple-id 6779988393"
+
+
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.lindseybarnard.cookbook
