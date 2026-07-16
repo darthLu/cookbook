@@ -26,6 +26,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
     'Soup',
     'Dessert',
     'Side Dish',
+    'Sauce',
   ];
 
   @override
