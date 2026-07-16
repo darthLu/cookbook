@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:cookbook/main.dart';
 import 'package:cookbook/screens/edit_recipe_screen.dart';
+import 'package:cookbook/screens/main_navigation_screen.dart';
 
 void main() {
   testWidgets('Cookbook app shows splash screen', (WidgetTester tester) async {
@@ -52,5 +53,37 @@ void main() {
     final saveButton = find.widgetWithText(ElevatedButton, 'Save Recipe');
     expect(saveButton, findsOneWidget);
     expect(tester.getBottomRight(saveButton).dy, lessThanOrEqualTo(844));
+  });
+
+  testWidgets('Bottom navigation switches between app sections', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MainNavigationScreen(
+          pages: [
+            Center(child: Text('Recipes page')),
+            Center(child: Text('Favorites page')),
+            Center(child: Text('Converter page')),
+            Center(child: Text('Timers page')),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.text('Recipes page'), findsOneWidget);
+    expect(find.text('Recipes'), findsOneWidget);
+    expect(find.text('Favorites'), findsOneWidget);
+    expect(find.text('Converter'), findsOneWidget);
+    expect(find.text('Timers'), findsOneWidget);
+
+    await tester.tap(find.text('Converter'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Converter page'), findsOneWidget);
+    final navigationBar = tester.widget<NavigationBar>(
+      find.byType(NavigationBar),
+    );
+    expect(navigationBar.selectedIndex, 2);
   });
 }
