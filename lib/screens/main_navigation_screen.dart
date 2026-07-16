@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
+import 'timers_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final List<Widget>? pages;
@@ -28,11 +29,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           title: 'Converter',
           message: 'The measurement converter is coming next.',
         ),
-        _ComingSoonScreen(
-          icon: Icons.timer_outlined,
-          title: 'Timers',
-          message: 'Your cooking timers will appear here.',
-        ),
+        TimersScreen(),
       ];
 
   @override

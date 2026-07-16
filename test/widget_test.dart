@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/screens/edit_recipe_screen.dart';
 import 'package:cookbook/screens/main_navigation_screen.dart';
+import 'package:cookbook/screens/timers_screen.dart';
 
 void main() {
   testWidgets('Cookbook app shows splash screen', (WidgetTester tester) async {
@@ -85,5 +86,22 @@ void main() {
       find.byType(NavigationBar),
     );
     expect(navigationBar.selectedIndex, 2);
+  });
+
+  testWidgets('Cooking timers can be created', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: TimersScreen()));
+
+    expect(find.text('No timers yet'), findsOneWidget);
+    await tester.tap(find.byTooltip('Add timer'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.widgetWithText(TextFormField, 'Name'), 'Pasta');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Minutes'), '10');
+    await tester.tap(find.widgetWithText(FilledButton, 'Add'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pasta'), findsOneWidget);
+    expect(find.text('10:00'), findsOneWidget);
+    expect(find.widgetWithText(FilledButton, 'Start'), findsOneWidget);
   });
 }
