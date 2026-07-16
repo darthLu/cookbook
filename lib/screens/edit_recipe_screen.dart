@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
-import 'package:flutter/services.dart';
 
 class EditRecipeScreen extends StatefulWidget {
   final Recipe? recipe;
@@ -53,6 +52,25 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
     }
   }
 
+  void _saveRecipe() {
+    final recipe = Recipe(
+      id: widget.recipe?.id,
+      name: nameController.text,
+      cookTime: cookTimeController.text,
+      description: descriptionController.text,
+      ingredients: ingredientsController.text
+          .split('\n')
+          .where((item) => item.trim().isNotEmpty)
+          .toList(),
+      steps: stepsController.text
+          .split('\n')
+          .where((item) => item.trim().isNotEmpty)
+          .toList(),
+      category: selectedCategory,
+    );
+    Navigator.pop(context, recipe);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +98,15 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
               TextField(
                 controller: descriptionController,
+                minLines: 4,
+                maxLines: 8,
                 maxLength: 250,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(120),
-                ],
-                decoration: const InputDecoration(labelText: 'Description', counterText:'',),
+                keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  alignLabelWithHint: true,
+                ),
               ),
 
               const SizedBox(height: 16),
@@ -128,31 +150,17 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                   //border: OutlineInputBorder(),
                 ),
               ),
-
-              const SizedBox(height: 16),
-
-              ElevatedButton(
-                onPressed: () {
-                  final recipe = Recipe(
-                    id: widget.recipe?.id,
-                    name: nameController.text,
-                    cookTime: cookTimeController.text,
-                    description: descriptionController.text,
-                    ingredients: ingredientsController.text
-                        .split('\n')
-                        .where((item) => item.trim().isNotEmpty)
-                        .toList(),
-                    steps: stepsController.text
-                        .split('\n')
-                        .where((item) => item.trim().isNotEmpty)
-                        .toList(),
-                    category: selectedCategory,
-                  );
-                  Navigator.pop(context, recipe);
-                },
-                child: const Text('Save Recipe'),
-              ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: _saveRecipe,
+            child: const Text('Save Recipe'),
           ),
         ),
       ),
