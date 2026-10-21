@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../models/recipe.dart';
+import 'meal_plan_service.dart';
 
 class RecipeFirestoreService {
+  static final changes = ValueNotifier<int>(0);
   static Future<List<Recipe>> loadRecipes() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('recipes')
@@ -45,9 +48,12 @@ class RecipeFirestoreService {
           'cookTime': recipe.cookTime,
           'category': recipe.category,
         });
+    await MealPlanService.instance.updateRecipe(recipe);
+    changes.value++;
   }
 
   static Future<void> deleteRecipe(String id) async {
     await FirebaseFirestore.instance.collection('recipes').doc(id).delete();
+    await MealPlanService.instance.deleteRecipe(id);
   }
 }

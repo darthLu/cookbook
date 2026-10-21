@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import 'edit_recipe_screen.dart';
+import 'add_to_meal_plan.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
   final Recipe recipe;
@@ -29,6 +30,13 @@ class RecipeDetailScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F0E8),
       appBar: AppBar(
         title: Text(recipe.name),
+        actions: [
+          IconButton(
+            tooltip: 'Add to meal plan',
+            icon: const Icon(Icons.calendar_month_outlined),
+            onPressed: () => addToMealPlan(context, recipe),
+          ),
+        ],
         backgroundColor: const Color.fromARGB(255, 5, 106, 23),
         foregroundColor: Colors.white,
       ),

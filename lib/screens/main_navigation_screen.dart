@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
-import 'timers_screen.dart';
+import 'meal_planning_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final List<Widget>? pages;
@@ -19,22 +19,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       widget.pages ??
       const [
         HomeScreen(),
+        MealPlanningScreen(),
         _ComingSoonScreen(
           icon: Icons.favorite_outline,
           title: 'Favorites',
           message: 'Your favorite recipes will appear here.',
         ),
-        _ComingSoonScreen(
-          icon: Icons.straighten,
-          title: 'Converter',
-          message: 'The measurement converter is coming next.',
-        ),
-        TimersScreen(),
       ];
 
   @override
   Widget build(BuildContext context) {
-    assert(_pages.length == 4);
+    assert(_pages.length == 3);
 
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _pages),
@@ -52,19 +47,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: 'Recipes',
           ),
           NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month),
+            label: 'Meal Planning',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.favorite_outline),
             selectedIcon: Icon(Icons.favorite),
             label: 'Favorites',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.straighten_outlined),
-            selectedIcon: Icon(Icons.straighten),
-            label: 'Converter',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.timer_outlined),
-            selectedIcon: Icon(Icons.timer),
-            label: 'Timers',
           ),
         ],
       ),

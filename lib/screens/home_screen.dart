@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'recipe_detail_screen.dart';
 import 'edit_recipe_screen.dart';
+import 'add_to_meal_plan.dart';
 import '../models/recipe.dart';
 import '../services/recipe_firestore_service.dart';
 
@@ -21,15 +22,50 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadRecipes();
+    RecipeFirestoreService.changes.addListener(_loadRecipes);
+  }
+
+  @override
+  void dispose() {
+    RecipeFirestoreService.changes.removeListener(_loadRecipes);
+    super.dispose();
   }
 
   Future<void> _loadRecipes() async {
     final firestoreRecipes = await RecipeFirestoreService.loadRecipes();
 
+    if (!mounted) return;
     setState(() {
       recipes = firestoreRecipes;
       isLoading = false;
     });
+  }
+
+  Future<void> _showRecipeActions(Recipe recipe) async {
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.calendar_month_outlined),
+              title: const Text('Add to meal plan'),
+              onTap: () => Navigator.pop(context, 'plan'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete_outline),
+              title: const Text('Delete recipe'),
+              onTap: () => Navigator.pop(context, 'delete'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (!mounted) return;
+    if (action == 'plan') await addToMealPlan(context, recipe);
+    if (action == 'delete') _showDeleteDialog(recipe);
   }
 
   void _showDeleteDialog(Recipe recipe) {
@@ -277,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             },
                             onLongPress: () {
-                              _showDeleteDialog(recipe);
+                              _showRecipeActions(recipe);
                             },
                           ),
                         );
